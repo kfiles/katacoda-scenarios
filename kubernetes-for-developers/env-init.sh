@@ -1,1 +1,0 @@
-ssh root@host01 "kubectl create ns dev && kubectl create ns test && /usr/bin/get_helm.sh && helm init && kubectl completion bash > bash_completion && helm completion bash >> bash_completion && echo done >> /opt/katacoda-completed"
