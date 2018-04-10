@@ -1,6 +1,16 @@
+## Enable Autocompletion
+
+`source bash_completion`{{execute T1}}
+
 ## Deployments and Pods
 
 Application containers are configured as a Deployment in Kubernetes. The Deployment takes care of managing replication (high-availability through scheduling pods on multiple nodes), executing healthchecks on the container, and restarting pods which die.
+
+kubectl is the single command you need to check cluster status, deploy new services, and view logs. Let’s start looking around. 
+
+`kubectl get namespaces`{{execute T1}}
+
+In Kubernetes, namespaces provide separate environments within a cluster. As you can see, we have setup an environment for both dev and test. Feature branches will be built to dev. Pull requests will be deployed to the integration environment in the test namespace.
 
 To see the current deployments, execute the following command:
 
@@ -14,18 +24,14 @@ Try:
 
 The service is the named endpoint, which provides a ClusterIP which other pods can use to communicate with this application. Within this Kubernetes cluster, any connection to the `kubernetes-bootcamp` service will be routed to this ClusterIP, and connected to one of the available pods belonging to the service.
 
-## Deploying a new application
+You can also see more details of the service, including its opertational status, with the following command:
 
-Let's deploy another application. Take a look at `/root/httpbin-1.yaml`. It contains the definition of both a Service and a Deployment (multiple specifications can be put into a single file).
+`kubectl describe svc kubernetes-bootcamp`{{execute T1}}
 
-Now lets create this new service:
+The full specification of the service can be retrieved in yaml or json output format as well:
 
-`kubectl create -f /root/httpbin-1.yaml`{{execute T1}}
+`kubectl get svc kubernetes-bootcamp -o yaml`{{execute T1}}
 
-Check that the new service has been created:
+Now lets see all the pods which have been created to provide this service. They have been scheduled on multiple nodes, and provide both load-balancing, and high-availability. Connections to the service will only be delegated to healthy pods.
 
-`kubectl get svc httpbin-v1`{{execute T1}}
-
-Now look for the pods bound to this service. Both the service and the pods have a label `app=httpbin`. We can use a label selector to find the pods:
-
-`kubectl get pod -l app=httpbin`{{execute T1}}
+`kubectl get pods`{{execute T1}}
