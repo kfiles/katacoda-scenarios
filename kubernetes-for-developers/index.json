@@ -5,6 +5,7 @@
     "steps": [
       {
         "title": "Step 1",
+        "code": "foreground.sh",
         "text": "step1.md"
       },
       {
@@ -25,6 +26,7 @@
     },
     "assets": {
       "host01": [
+        {"file": "launch.sh", "target": "/usr/bin/", "chmod": "+x"},
         {"file": "httpbin-1.yaml", "target": "/root", "chmod": "644"},
         {"file": "get_helm.sh", "target": "/usr/bin", "chmod": "755"}
       ]
