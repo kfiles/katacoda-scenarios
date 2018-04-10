@@ -4,48 +4,28 @@ Application containers are configured as a Deployment in Kubernetes. The Deploym
 
 To see the current deployments, execute the following command:
 
-`kubectl get deployments -o wide`{{execute T1}}
+`kubectl get deployments`{{execute T1}}
 
-To log in the OpenShift cluster, type `oc login -u system:admin`{{execute T1}}
+As you can see, we have 4 out of 4 pods up and running for the Deployment kubernetes-bootcamp.
 
-Now that you are logged in, it's time to extract the existing istio installation: `tar -zxvf istio-0.6.0-linux.tar.gz`{{execute T1}}
+Try:
 
-## Before the installation
+`kubectl get svc`{{execute T1}}
 
-Istio will be installed on a project/namespace called istio-system.
+The service is the named endpoint, which provides a ClusterIP which other pods can use to communicate with this application. Within this Kubernetes cluster, any connection to the `kubernetes-bootcamp` service will be routed to this ClusterIP, and connected to one of the available pods belonging to the service.
 
-*"OpenShift provides security context constraints (SCC) that control the actions that a pod can perform and what it has the ability to access."*
+## Deploying a new application
 
-Because of SCC, we need to allow the Istio service account to execute images with any user id.
-There's a SCC called `anyuid` that needs to be associated with Istio service accounts.
+Let's deploy another application. Take a look at `/root/httpbin-1.yaml`. It contains the definition of both a Service and a Deployment (multiple specifications can be put into a single file).
 
-Execute the following commands
+Now lets create this new service:
 
-`oc adm policy add-scc-to-user anyuid -z istio-ingress-service-account -n istio-system`{{execute T1}}
+`kubectl create -f /root/httpbin-1.yaml`{{execute T1}}
 
-`oc adm policy add-scc-to-user anyuid -z default -n istio-system`{{execute T1}}
+Check that the new service has been created:
 
-To understand more about SCC, we recommend you to read [Understanding Service Accounts and SCCs](https://blog.openshift.com/understanding-service-accounts-sccs/)
+`kubectl get svc httpbin-v1`{{execute T1}}
 
-## Continue the installation
+Now look for the pods bound to this service. Both the service and the pods have a label `app=httpbin`. We can use a label selector to find the pods:
 
-Istio provides a file `install/kubernetes/istio.yaml` that contains the definition of all objects that needs to be created in the Kubernetes cluster.
-
-Let's apply these defintions to the cluster by executing `oc apply -f istio-0.6.0/install/kubernetes/istio.yaml`{{execute T1}}
-
-After the execution, Istio objects will be created.
-
-To watch the creation of the pods, execute `oc get pods -w -n istio-system`{{execute T1}}
-
-Once that they are all `Running`, you can hit `CTRL+C`. This concludes this scenario.
-
-## Add Istio to the path
-
-Now we need to add `istioctl` to the path.
-
-Execute `export PATH=$PATH:/root/installation/istio-0.6.0/bin/`{{execute T1}}.
-
-Now try it. Check the version of `istioctl`. 
-
-Execute `istioctl version`{{execute T1}}.
-
+`kubectl get pod -l app=httpbin`{{execute T1}}
