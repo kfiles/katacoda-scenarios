@@ -1,4 +1,4 @@
-##Packaging with Helm
+## Packaging with Helm
 
 We have worked with a few Kubernetes descriptor files: Pods, Deployments, Services, and ConfigMaps. There are some others, as well: PersistentVolumeClaims, Secrets, and Ingress.
 
@@ -32,6 +32,6 @@ Here's what got deployed
 
 `helm status ghost`{{execute T1}}
 
-##Conclusion
+## Conclusion
 
 Helm greatly simplifies the deployment of all of the artifacts we need to deploy in Kubernetes, and allows us to configure different values for the templates for each environment.
