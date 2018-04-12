@@ -1,4 +1,4 @@
-#Packaging with Helm
+##Packaging with Helm
 
 We have worked with a few Kubernetes descriptor files: Pods, Deployments, Services, and ConfigMaps. There are some others, as well: PersistentVolumeClaims, Secrets, and Ingress.
 
@@ -26,9 +26,12 @@ We can see what values these templates need, and check if we want to customize a
 
 Installing this chart merely requires us to specify a unique Release name (so that the same application may be installed multiple times under different Release names).
 
-`helm install --name ghost ghost`{{execute T1}}
+`helm install --name ghost --set ghostName=ghost --set serviceType=NodePort ghost`{{execute T1}}
 
-Our newly installed app is running at
+Here's what got deployed
 
-https://[[HOST_SUBDOMAIN]]-80-[[KATACODA_HOST]].environments.katacoda.com/
+`helm status ghost`{{execute T1}}
 
+##Conclusion
+
+Helm greatly simplifies the deployment of all of the artifacts we need to deploy in Kubernetes, and allows us to configure different values for the templates for each environment.

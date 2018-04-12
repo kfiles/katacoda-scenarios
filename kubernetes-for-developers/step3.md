@@ -22,9 +22,13 @@ How can we use these ConfigMaps? Let's consider the first ConfigMap, containing 
 
 `kubectl create -f /root/special.yaml`{{execute T1}}
 
+`kubectl logs configtest`{{execute T1}}
+
 For our ConfigMap creating from a full logback.xml config file, we want to mount that file in a Volume within the container. The example Pod below does just that:
 
 `kubectl create -f /root/logtest.yaml`{{execute T1}}
+
+`kubectl logs logtest`{{execute T1}}
 
 ## Conclusion
 
