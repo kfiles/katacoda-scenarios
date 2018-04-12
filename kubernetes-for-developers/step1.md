@@ -24,7 +24,7 @@ Try:
 
 The service is the named endpoint, which provides a ClusterIP which other pods can use to communicate with this application. Within this Kubernetes cluster, any connection to the `kubernetes-bootcamp` service will be routed to this ClusterIP, and connected to one of the available pods belonging to the service.
 
-You can also see more details of the service, including its opertational status, with the following command:
+You can also see more details of the service with the following command:
 
 `kubectl describe svc kubernetes-bootcamp`{{execute T1}}
 

@@ -28,6 +28,7 @@
       "host01": [
         {"file": "launch.sh", "target": "/usr/bin/", "chmod": "+x"},
         {"file": "httpbin-1.yaml", "target": "/root", "chmod": "644"},
+        {"file": "curl.yaml", "target": "/root", "chmod": "644"},
         {"file": "get_helm.sh", "target": "/usr/bin", "chmod": "755"}
       ]
     }
