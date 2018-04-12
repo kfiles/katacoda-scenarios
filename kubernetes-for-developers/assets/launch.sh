@@ -1,3 +1,4 @@
+apt install socat
 echo "Starting Kubernetes..."
 while [ `docker ps | wc -l` -eq 1 ]
 do

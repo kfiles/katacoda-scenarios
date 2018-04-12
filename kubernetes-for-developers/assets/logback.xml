@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="30 seconds" debug="true" packagingData="true">
+
+  <if condition='property("LOG_SOCKET_ENABLED").contains("true")'>
+    <then>
+      <appender name="SOCKET" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <destination>${LOG_SOCKET_HOSTNAME}:${LOG_SOCKET_PORT}</destination>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+      </appender>
+    </then>
+  </if>
+
+  <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>/logs/tomcat/iscng.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+      <maxHistory>30</maxHistory>
+      <totalSizeCap>3GB</totalSizeCap>
+    </rollingPolicy>
+    <encoder>
+      <pattern>[%date{ISO8601}] %-6level [ORD] [%X{req.requestURI}] [%t] [%X{customer}] [%X{realUser} - %X{effectiveUserInfo}] [%logger{15}] %msg %n</pattern>
+    </encoder>
+  </appender>
+
+  <!--
+  <logger name="org.apache.http.wire" level="DEBUG" />
+  <logger name="com.masergy" level="DEBUG" />
+  -->
+  <!-- These guys are very chatty.  Mute the info messages. -->
+  <logger name="com.masergy.isc.common.wsclient.CustomerClient" level="WARN" />
+  <logger name="com.masergy.isc.common.wsclient.BaseContactClient" level="WARN" />
+
+  <root level="INFO">
+    <appender-ref ref="FILE"/>
+    <if condition='property("LOG_SOCKET_ENABLED").contains("true")'>
+      <then>
+        <appender-ref ref="SOCKET"/>
+      </then>
+    </if>
+  </root>
+
+  <shutdownHook class="ch.qos.logback.core.hook.DelayingShutdownHook" />
+</configuration>
